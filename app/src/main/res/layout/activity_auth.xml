@@ -65,7 +65,7 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonEnter"
         android:layout_width="300dp"
         android:layout_height="52dp"
         android:layout_marginStart="8dp"

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "323470692948",
+    "firebase_url": "https://desafioappia.firebaseio.com",
+    "project_id": "desafioappia",
+    "storage_bucket": "desafioappia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323470692948:android:9eb6070308a0452d6313c1",
+        "android_client_info": {
+          "package_name": "br.com.erico.desafioappia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323470692948-357s5vbhgs0v5ii65v7c3fpqb49j46e2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.erico.desafioappia",
+            "certificate_hash": "10e5b2e489a36a729ab54d526252efdae2899782"
+          }
+        },
+        {
+          "client_id": "323470692948-3395l2j75fuefn17sj9oplvsf8gkobb1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsQcrthAPAeJZkWG4HHlS68AlcSJPnhXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323470692948-3395l2j75fuefn17sj9oplvsf8gkobb1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
