@@ -6,7 +6,6 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import br.com.erico.desafioappia.MainActivity;
 import br.com.erico.desafioappia.R;
 
 public class SplashScreen extends AppCompatActivity {
@@ -27,7 +26,7 @@ public class SplashScreen extends AppCompatActivity {
 
     public void screens(){
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Auth.class);
         startActivity(intent);
         finish();
 
