@@ -37,7 +37,7 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".views.Dashboard"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

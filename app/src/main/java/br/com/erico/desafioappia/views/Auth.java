@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import br.com.erico.desafioappia.MainActivity;
 import br.com.erico.desafioappia.R;
 import br.com.erico.desafioappia.controls.Connection;
 import br.com.erico.desafioappia.models.User;
@@ -61,8 +60,9 @@ public class Auth extends AppCompatActivity implements View.OnClickListener {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Intent intent = new Intent(Auth.this, MainActivity.class);
+                            Intent intent = new Intent(Auth.this, Dashboard.class);
                             startActivity(intent);
+                            finish();
                         }else{
                             alert("E-mail ou Senha inválido");
                         }

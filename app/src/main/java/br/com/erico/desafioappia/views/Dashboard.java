@@ -1,34 +1,58 @@
-package br.com.erico.desafioappia;
+package br.com.erico.desafioappia.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import br.com.erico.desafioappia.R;
+import br.com.erico.desafioappia.controls.Connection;
+
+public class Dashboard extends AppCompatActivity {
+
+    private TextView textViewAuth;
+
+    private FirebaseAuth auth;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        startComponents();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    }
+
+    private void startComponents() {
+        textViewAuth = (TextView)findViewById(R.id.textViewAuth);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth = Connection.getFirebaseAuth();
+        user = Connection.getFirebaseUser();
+        verifyAuth();
+    }
+
+    private void verifyAuth() {
+        if(auth == null){
+            finish();
+        }else{
+            textViewAuth.setText("ID: " + auth.getUid());
+        }
     }
 
     @Override
@@ -47,7 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Connection.logOut();
+            Intent intent = new Intent(this, Auth.class);
+            startActivity(intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
