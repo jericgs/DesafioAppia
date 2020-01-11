@@ -48,10 +48,10 @@ public class Dashboard extends AppCompatActivity {
     }
 
     private void verifyAuth() {
-        if(auth == null){
+        if(user == null){
             finish();
         }else{
-            textViewAuth.setText("ID: " + auth.getUid());
+            textViewAuth.setText("ID: " + auth.getUid() + "\nE-mail: " + user.getEmail());
         }
     }
 

@@ -32,7 +32,7 @@ public class Connection {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(firebaseUser != null){
+                if(user != null){
                     firebaseUser = user;
                 }
             }
