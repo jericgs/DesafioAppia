@@ -5,15 +5,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +47,7 @@ public class Dashboard extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         startComponents();
-        setData(itensGr.length);
+        starGraphic(itensGr.length);
 
     }
 
@@ -60,17 +56,19 @@ public class Dashboard extends AppCompatActivity {
         barChart = (BarChart) findViewById(R.id.graphicID);
     }
 
-    private void setData(int count)  {
+    private void starGraphic(int count)  {
 
         List<BarEntry> barEntries = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
 
 
         for(int i = 0; i < count; i++){
             barEntries.add(new BarEntry(i, itensGr[i]));
+            labels.add(descrip[i]);
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Níveis de Glicose");
-        barDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+        barDataSet.setColors(ColorTemplate.rgb("#95A67A"));
         barDataSet.setDrawValues(true);
 
         BarData barData = new BarData(barDataSet);
@@ -83,6 +81,7 @@ public class Dashboard extends AppCompatActivity {
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
         xAxis.setDrawGridLines(false);
 
         YAxis leftAxis = barChart.getAxisLeft();
