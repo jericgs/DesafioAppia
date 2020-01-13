@@ -2,6 +2,7 @@ package br.com.erico.desafioappia.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import br.com.erico.desafioappia.R;
 import br.com.erico.desafioappia.controls.Connection;
@@ -25,6 +27,7 @@ public class Auth extends AppCompatActivity implements View.OnClickListener {
     private Button buttonEnter;
 
     private FirebaseAuth auth;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle bundle){
@@ -33,6 +36,23 @@ public class Auth extends AppCompatActivity implements View.OnClickListener {
         startComponents();
         eventClick();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth = Connection.getFirebaseAuth();
+        user = Connection.getFirebaseUser();
+        //checkLogged();
+    }
+
+    private void checkLogged() {
+        if(user != null){
+            Intent intent = new Intent(Auth.this, Dashboard.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
 
     private void startComponents() {
         editTextEmail = (EditText) findViewById(R.id.editTextUsername);
@@ -74,10 +94,4 @@ public class Auth extends AppCompatActivity implements View.OnClickListener {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth = Connection.getFirebaseAuth();
-    }
 }

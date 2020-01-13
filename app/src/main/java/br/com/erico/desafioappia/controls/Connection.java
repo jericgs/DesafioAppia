@@ -1,5 +1,7 @@
 package br.com.erico.desafioappia.controls;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +35,9 @@ public class Connection {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
+
                     firebaseUser = user;
+                    Log.i("----------------------", "Aqui 1: " + firebaseUser.getEmail());
                 }
             }
         };
@@ -43,6 +47,7 @@ public class Connection {
     }
 
     public static FirebaseUser getFirebaseUser(){
+        //Log.i("----------------------", "Aqui 2: " + firebaseUser.getEmail());
         return firebaseUser;
     }
 
