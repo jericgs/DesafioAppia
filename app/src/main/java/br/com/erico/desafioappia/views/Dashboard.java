@@ -12,14 +12,23 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,18 +36,24 @@ import java.util.List;
 
 import br.com.erico.desafioappia.R;
 import br.com.erico.desafioappia.controls.Connection;
+import br.com.erico.desafioappia.models.Measurement;
 
 public class Dashboard extends AppCompatActivity {
 
     private TextView textViewAuth;
     private BarChart barChart;
 
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+
+    private List<Measurement> measurementList = new ArrayList<>();
+
     private FirebaseAuth auth;
     private FirebaseUser user;
 
-    private int[] itensGr = {153, 190, 134, 65, 112};
+    //private int[] itensGr = {153, 190, 134, 65, 112};
 
-    private String[] descrip = {"01/12", "02/12", "03/12", "04/12", "05/12"};
+    //private String[] descrip = {"01/12", "02/12", "03/12", "04/12", "05/12"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +62,42 @@ public class Dashboard extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         startComponents();
-        starGraphic(itensGr.length);
+        startFirebase();
+        eventDataBase();
+        starGraphic();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth = Connection.getFirebaseAuth();
+        user = Connection.getFirebaseUser();
+        verifyAuth();
+    }
+
+    private void eventDataBase(){
+        databaseReference.child("Measurement").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot objSnapshot:dataSnapshot.getChildren()){
+                    Measurement measurement = objSnapshot.getValue(Measurement.class);
+                    measurementList.add(measurement);
+                }
+
+                starGraphic();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+    private void startFirebase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        //firebaseDatabase.setPersistenceEnabled(true);
+        databaseReference = firebaseDatabase.getReference();
     }
 
     private void startComponents() {
@@ -56,15 +105,14 @@ public class Dashboard extends AppCompatActivity {
         barChart = (BarChart) findViewById(R.id.graphicID);
     }
 
-    private void starGraphic(int count)  {
+    private void starGraphic()  {
 
         List<BarEntry> barEntries = new ArrayList<>();
         List<String> labels = new ArrayList<>();
 
-
-        for(int i = 0; i < count; i++){
-            barEntries.add(new BarEntry(i, itensGr[i]));
-            labels.add(descrip[i]);
+        for(int i = 0; i < measurementList.size(); i++){
+            barEntries.add(new BarEntry(i, measurementList.get(i).getGlucose()));
+            labels.add(measurementList.get(i).getDay());
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Níveis de Glicose");
@@ -97,14 +145,6 @@ public class Dashboard extends AppCompatActivity {
 
         barChart.animateY(500);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth = Connection.getFirebaseAuth();
-        user = Connection.getFirebaseUser();
-        verifyAuth();
     }
 
     private void verifyAuth() {
